@@ -1,0 +1,32 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+ul {
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+nav {
+    width: 100%;
+    background-color: cadetblue;
+}
+
+.Nav-bar {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-right: 4rem;
+    margin-top: 2rem;
+    
+}
+
+li {
+    margin-right: 4rem;
+    margin-bottom: 2rem;
+}
