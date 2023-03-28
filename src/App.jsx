@@ -1,13 +1,21 @@
-import './App.css';
-import NavBar from "./components/NavBar";
-import Flex from "./components/Flex";
-
+import "./App.css";
+import NavBar from "./components/NavBar"
+import ItemListContainer from "./components/ItemListContainer/ItemListContainer";
+import ItemDetailContainer from "./components/ItemDetailContainer/ItemDetailContainer";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 function App() {
   return (
-    <Flex>
-    <NavBar/>
-    </Flex>
+    <BrowserRouter>
+    <NavBar />
+      <Routes>
+      <Route path="/" element={<ItemListContainer />} />
+        <Route path="/category/:categoryid" element={ <ItemListContainer/> } />
+        <Route path="/detalle/:nombreid" element={<ItemDetailContainer />} />
+        <Route path="*" element={<h1>Error 404 page not found</h1>}/>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
 export default App;
+
