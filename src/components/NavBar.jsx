@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
-
+import { useContext } from "react";
+import { cartContext } from "../context/cartContext";
 function NavBar(){
+    const { cart } = useContext(cartContext);
     return(
             <nav className="wrapper">
                 <Link to="/"><h1 className="logo">TKL Farmacia</h1></Link>
@@ -25,11 +27,15 @@ function NavBar(){
                     Ibupirac
                     </li>
                     </Link>
+                    
+                    <Link to="/cart">
                     <li>
-                        <a  href="#">
-                            <i className="bi bi-cart-fill"></i> Carrito 0
-                        </a>
+                        
+                            <i className="bi bi-cart-fill"></i>
+                        
+                        <span className="cartWidget_count"> Carrito {cart.length}</span>
                     </li>
+                    </Link>
                 </ul>
             </nav>
     )

@@ -1,27 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import Boton from "../Boton/Boton"
-
-
-import productsDatabase from "../../data/products";
-
-function getSingleItem(idURL) {
-const promesa = new Promise((resolve, reject) => {
-    setTimeout(() => {
-    const itemRequested = productsDatabase.find((item) => {
-        return item.id === parseInt(idURL);
-    });
-    resolve(itemRequested);
-    }, 1000);
-});
-
-return promesa;
-}
-
+import { Link, useParams } from "react-router-dom";
+import ItemCount from "../ItemCount/ItemCount";
+import Button from "../Button/Button";
+import Flex from "../Flex/Flex";
+import Loader from "../Loader/Loader";
+import { useContext } from "react";
+import { cartContext } from "../../context/cartContext";
+import { getSingleItem } from "../../services/firestore";
 
 function ItemDetailContainer() {
     const [product, setProduct] = useState([]);
+    const [addedToCart, setAddedToCart] = useState(false);
     let { nombreid } = useParams();
+
+    const { cart, addItem } = useContext(cartContext);
     
 
 useEffect(() => {
@@ -30,6 +22,17 @@ useEffect(() => {
     });
 }, [nombreid]);
 
+
+
+function onAddToCart(count) {
+    addItem(product, count);
+    
+  }
+
+
+  if (product.length === 0) {
+    return <Flex><Loader/></Flex>
+  }
 
 
 return (
@@ -42,7 +45,14 @@ return (
             <p>Stock disponible: {product.stock}</p>
             <p>Información del producto :
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus corporis consequatur assumenda? Fugiat dicta vel earum! Facilis consectetur, a quas possimus praesentium iste doloribus, voluptas perferendis debitis atque numquam distinctio!</p>
-            <Boton></Boton>
+                
+                <ItemCount onAddToCart={onAddToCart} />
+                <Link to={`/detalle/${product.id - 1}`}>
+                    <Button>Anterior</Button>
+                </Link>
+                <Link to={`/detalle/${product.id + 1}`}>
+                    <Button>Siguiente</Button>
+                </Link>
         </div>
     </div>
     );

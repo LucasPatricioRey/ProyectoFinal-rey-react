@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Boton from "../Boton/Boton"
+import Button from "../Button/Button"
+
 export default function Item(props) {
   
   return (
@@ -19,9 +20,9 @@ export default function Item(props) {
           <small>{props.category}</small>
           <h5>Stock disponible:{props.stock}</h5>
         </div>
-        <button>Ver detalle</button>
+        <Button>Ver detalle</Button>
       </Link>
-      <Boton></Boton>
+      
     </div>
   );
 }
