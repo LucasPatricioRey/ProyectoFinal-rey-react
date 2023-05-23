@@ -4,7 +4,7 @@
     --uib-color: black;
     --uib-line-weight: 10px;
   
-    position: relative;
+    
     display: flex;
     align-items: center;
     justify-content: center;
@@ -14,14 +14,13 @@
     overflow: hidden;
     transform: translate3d(0, 0, 0);
 
-    margin-top: 17rem;
+    margin: auto;
+    margin-top: 15rem;
   }
   
   .race-by::before {
     content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
+    
     height: 100%;
     width: 100%;
     background-color: var(--uib-color);

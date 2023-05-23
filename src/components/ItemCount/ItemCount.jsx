@@ -1,32 +1,33 @@
-import React, { useState } from "react";
-import Button from "../Button/Button";
+import React, {useState} from 'react'
 
-export default function ItemCount({onAddToCart}) {
-  const [count, setCount] = useState(1);
-
-  function handleAdd() {
-    setCount(count + 1);
-  }
-  function handleSubstract() {
+export default function ItemCount(props) {
     
-    if(count > 1) {
-      setCount(count - 1);
-    }
-    else {
-      alert("La cantidad no puede ser 0")
-    }
-  }
+    const[ count, setCount] = useState(1);
 
-  return (
-    <div>
-      <Button  onPress={handleSubstract}>
-        -
-      </Button>
-      <span> {count} </span>
-      <Button  onPress={handleAdd}>
-        +
-      </Button>
-      <button onClick={() => onAddToCart(count)}>Agregar al carrito</button>
-    </div>
-  );
+
+    function handleAdd(){
+        if (count < props.stock){
+          setCount(count + 1)
+        }
+        else{
+            alert("no se puede esa cantidad de productos");
+        }
+    }
+    function handleSubstract(){
+        if (count>1){
+          setCount(count - 1)
+        }
+        else{
+            alert("no se puede tener menos de 1 producto");
+        }
+    }
+  
+
+    return (
+    <div  >
+        <button onClick={handleSubstract}> - </button>
+        <span> {count} </span>
+        <button onClick={handleAdd}> + </button> 
+        <button onClick={()=>props.onAddToCart(count)} > Agregar al carrito </button>
+    </div> )
 }

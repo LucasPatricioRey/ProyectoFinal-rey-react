@@ -1,0 +1,19 @@
+.carrito-numero{
+    display: flex;
+    align-items: center;
+}
+
+.img-cart{
+    width: 130px;
+    height: 80px;
+    border-radius: 5px;
+    justify-content: flex-end;
+}
+.img-cart:hover{
+    transform: scale(0.9);
+    box-shadow: 2px white;
+}
+.numero{
+    color: rgb(36, 207, 65);
+    font-size: 40px;
+}

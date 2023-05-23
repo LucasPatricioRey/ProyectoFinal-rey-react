@@ -1,31 +1,53 @@
-import React, { useState, useContext } from "react";
+import { useContext } from 'react';
 import { cartContext } from "../../context/cartContext";
-import Button from "../Button/Button";
-import "./cart.css";
-import { createOrder } from "../../services/firestore";
+import "./cartContainer.css";
+import { createOrder } from '../services/firestore';
 import { useNavigate } from "react-router-dom";
 
+
 function CartContainer() {
-  const context = useContext(cartContext);
-  const { cart, getTotalPrice } = context;
-  const [buyComplete, setBuyComplete] = useState(false);
-  const navigateTo = useNavigate();
+  const { cart, removeItem, clearCart } = useContext(cartContext);
+  const navigate = useNavigate();
+
+  const totalPriceInCart = () => {
+    let totalPrice = 0;
+    for (const item of cart) {
+      totalPrice += item.price * item.count;
+    }
+    return totalPrice;
+  };
+
+  const totalItems = () => {
+    let totalCount = 0;
+    for (const item of cart) {
+      totalCount += item.count;
+    }
+    return totalCount;
+  };
 
   async function handleCheckout() {
     const order = {
       items: cart,
-      buyer: { name: "Santiago Coder", },
-      total: getTotalPrice(),
+      buyer: { name: "Santiago Coder"},
+      total: totalPriceInCart(),
       date: new Date(),
-    };
-    createOrder(order);
-
-    
+     
+    }; 
+console.log(handleCheckout);
+    const orderId = await createOrder(order);
+    navigate(`/checkout/${orderId}`);
+    clearCart()
   }
 
+  if (cart.length === 0)
+    return (
+      <div className="cart-container">
+        <h1>Carrito Vacío</h1>
+      </div>
+    );
 
   return (
-    <>
+    <div>
       <h1>Tu Carrito</h1>
 
       <table className="cartList">
@@ -35,11 +57,11 @@ function CartContainer() {
             <th>Titulo</th>
             <th>Precio</th>
             <th>Cantidad</th>
-            <th>Remover</th>
+            <th>Quitar</th>
             <th>Total</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="background">
           {cart.map((item) => (
             <tr key={item.id} className="cartList_row">
               <td>
@@ -49,21 +71,20 @@ function CartContainer() {
               <td>$ {item.price}</td>
               <td>{item.count}</td>
               <td>
-                <Button color="#c63224" onPress={item.removeItem}>
-                  X
-                </Button>
+                <button onClick={() => removeItem(item.id)}>X</button>
               </td>
-              <th>$ --,--</th>
+              <th>${item.count * item.price}</th>
             </tr>
           ))}
         </tbody>
       </table>
 
       <div className="cartList_detail">
-        <h4>El total de tu compra es de $ --,--</h4>
+        <h4>Tienes un total de {totalItems()} items en tu carrito</h4>
+        <h4>El total de tu compra es de ${totalPriceInCart()}</h4>
+        <button onPress={handleCheckout}>Finalizar la compra </button>
       </div>
-      <Button onPress={handleCheckout}>Finalizar Compra</Button>
-    </>
+    </div>
   );
 }
 

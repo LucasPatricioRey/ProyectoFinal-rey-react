@@ -1,48 +1,46 @@
-import React, { useState, useEffect } from "react";
-import Item from "../Item";
-import Flex from "../Flex/Flex";
-import { useParams } from "react-router-dom";
-import Loader from "../Loader/Loader";
-import { getItems, getItemsByCategory } from "../../services/firestore";
+import { useState, useEffect } from 'react';
+import ItemList from '../ItemList/ItemList';
+import { useParams } from 'react-router-dom';
+import Loader from '../Loader/Loader';
+import { getItems, getItemsByCategory} from '../services/firestore';
 
 
-function ItemListContainer() {
-  const [products, setProducts] = useState([]);
-  const { categoryid } = useParams();
+function ItemListContainer(){
 
-  useEffect(() => {
-    if (categoryid === undefined) {
-      getItems().then((respuesta) => {
-        setProducts(respuesta);
-      });
-    } else {
-      getItemsByCategory(categoryid).then((respuesta) =>
-        setProducts(respuesta)
-      );
-    }
-  }, [categoryid]);
+  const [products, setProducts ] = useState([]);
+  
 
-  if (products.length === 0) {
-    return <Flex><Loader/></Flex>
+  let {categoryid } = useParams();
+  
+
+  useEffect(()=>{
+    if ( categoryid === undefined){
+      
+            getItems().then((respuesta) => {
+  
+            setProducts(respuesta) ;
+            });}
+            else{
+              getItemsByCategory(categoryid).then(
+                (respuesta)=> setProducts(respuesta)
+              )
+            }
+            },
+            [categoryid] );
+
+
+
+
+  if(products.length === 0){
+    
+  return <Loader/>}
+
+      return(
+        <ItemList products={products}/>
+
+      )
   }
-
-  return (
-    <Flex>
-      {products.map((producto) => (
-        <Item
-          key={producto.id}
-          id={producto.id}
-          title={producto.title}
-          price={producto.price}
-          category={producto.category}
-          stock={producto.stock}
-          img={producto.img}
-        />
-      ))}
-    </Flex>
-  );
-}
-
-export default ItemListContainer;
+  
+  export default ItemListContainer;
 
 
